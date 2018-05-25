@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title><%= title %></title>
+  </head>
+  <body>
+    <script src="http://api.redh.io/assets/external/app.js"></script>
+
+    <script>
+      window.apiKey = "<%= apiKey %>"
+      window.shopOrigin = "https://<%= shop %>"
+
+      const redhioAppConfig = {
+        apiKey: window.apiKey,
+        shopOrigin: window.shopOrigin,
+      }
+
+      // This will allow you to access the app outside of the Redhio
+      // parent iframe in development mode. Doing this will give you
+      // access to React and Redux dev tools, but will also disrupt
+      // postmessages to the parent and block MLSDK calls
+      // https://help.redh.io/api/sdks/redhio-apps/embedded-app-sdk/methods#redhioapp-init-config
+      if ("<%= process.env.NODE_ENV %>" === 'development') {
+        redhioAppConfig.forceRedirect = false;
+      }
+
+      RedhioApp.init(redhioAppConfig);
+    </script>
+
+    <div id="root"></div>
+    <script src="/assets/main.js"></script>
+  </body>
+</html>
